@@ -19,22 +19,21 @@
 import sys
 from contact import Contact
 
-def populate_from_file():
-    #Update for multiple entries in file
+def create_from_file():
+    print ('Creating phonebook from contact.txt')
     fh = open('contact.txt','r')
     properties = dict()
     contacts=dict()
     for line in fh.readlines():
-        words = line.split()
-        print(words)
-        key = words.pop(0)
-        value = ' '.join(words)
-        print('KEY: ',key)
-        print('Value: ',value)
-        properties[key]= value
-    new_contact = Contact(**properties)
-    #Database free version, create dict with name key
-    contacts[new_contact.get_variable('name')] = new_contact
+        pairs = line.split(',')
+        for pair in pairs:
+            words = pair.split(":")
+            key = words[0]
+            value = words[1]
+            properties[key]= value
+        new_contact = Contact(**properties)
+        #Database free version, create dict with name key
+        contacts[new_contact.get_variable('name')] = new_contact
     return contacts
 
 def create_contacts():
@@ -55,7 +54,7 @@ def list(contacts):
         print(contacts[contact].get_variable('note'))
         print('----------------')
 
-def search_input_name(contacts,name):
+def search_name(contacts,name):
     import re
     print('Searching for... ',name)
     #print('keys',contacts.keys())
@@ -69,6 +68,15 @@ def search_input_name(contacts,name):
     else:
         print("Did not find : ",name)
 
+def remove_contact(contacts,name):
+    import re
+    for contact in contacts.keys():
+        if re.search(name, contact, re.IGNORECASE) :
+            print("removing...",name)
+            contacts.pop(contact,None)
+            break
+    list(contacts)
+    return contacts
 
 def main():
     import sys
@@ -79,17 +87,17 @@ def main():
         arguments = sys.argv[1:]
         count = len(arguments)
         print("Args: ",arguments)
+        contacts = create_from_file()
+        #contacts = create_contacts()
 
     if (arguments[0] == '-create') :
-        print ('Creating phonebook from contact.txt')
-        #contacts = populate_from_file()
-        contacts = create_contacts()
+        pass
     elif (arguments[0] == '-list') :
-        contacts = create_contacts()
         list(contacts)
     elif (arguments[0] == '-find') :
-        contacts = create_contacts()
-        search_input_name(contacts,arguments[1])
+        search_name(contacts,arguments[1])
+    elif (arguments[0] == '-remove') :
+        remove_contact(contacts,arguments[1])
 
     print('Done.')
 
