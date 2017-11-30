@@ -16,6 +16,7 @@
 # Have CRUD functionality for your Contact class
 # Save this project in a safe place, we will revisit in the Flask section!
 
+import sys
 from contact import Contact
 
 def populate_from_file():
@@ -54,24 +55,42 @@ def list(contacts):
         print(contacts[contact].get_variable('note'))
         print('----------------')
 
-def search_input_name(contacts):
+def search_input_name(contacts,name):
     import re
-    name = input('Enter name to find: ')
-    print('I will look for ',name)
-    print('keys',contacts.keys())
+    print('Searching for... ',name)
+    #print('keys',contacts.keys())
+    found = 0
     for contact in contacts.keys():
         if re.search(name, contact, re.IGNORECASE) :
+            found = 1
             match = contacts[contact]
-            print("found : ",match.get_variable('number'))
-        else:
-            print("Did not find : ",name)
+    if (found == 1) :
+        print("Found : ",match.get_variable('number'))
+    else:
+        print("Did not find : ",name)
 
 
 def main():
-    #contacts = populate_from_file()
-    contacts = create_contacts()
-    list(contacts)
-    search_input_name(contacts)
+    import sys
+    if len(sys.argv) == 1:
+        print ("Usage: ")
+        sys.exit(1)
+    else:
+        arguments = sys.argv[1:]
+        count = len(arguments)
+        print("Args: ",arguments)
+
+    if (arguments[0] == '-create') :
+        print ('Creating phonebook from contact.txt')
+        #contacts = populate_from_file()
+        contacts = create_contacts()
+    elif (arguments[0] == '-list') :
+        contacts = create_contacts()
+        list(contacts)
+    elif (arguments[0] == '-find') :
+        contacts = create_contacts()
+        search_input_name(contacts,arguments[1])
+
     print('Done.')
 
 
