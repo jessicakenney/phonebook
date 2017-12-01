@@ -81,11 +81,10 @@ def remove_contact(contacts,name):
 def main():
     import sys
     if len(sys.argv) == 1:
-        print ("Usage: ")
+        print ("Usage: -find <name> -list -delete <name>")
         sys.exit(1)
     else:
         arguments = sys.argv[1:]
-        count = len(arguments)
         print("Args: ",arguments)
         contacts = create_from_file()
         #contacts = create_contacts()
