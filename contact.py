@@ -16,4 +16,3 @@ class Contact:
     def get_variable(self,k):
         return self.variables.get(k,None)
 
-    #if __name__ == "__main__": main()
