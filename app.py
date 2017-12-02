@@ -41,6 +41,15 @@ def main():
         print ('Usage: app.py -list \n -find <name> \n -delete <name>')
         sys.exit(1)
 
+    #no-args
+    # contacts = create_from_file()
+    # phonebook = Phonebook(contacts)
+    # phonebook.list()
+    # phonebook.search_name('jessica')
+    # phonebook.remove_contact('jessica')
+    # phonebook.search_name('Banjo')
+
+
     print('Done.')
 
 if __name__ == "__main__": main()
